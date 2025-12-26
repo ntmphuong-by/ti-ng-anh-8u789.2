@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English 8 Global Success (Unit 7-9) - Song ngữ Việt/Anh</title>
+    <style>
+        :root { --primary: #00695c; --secondary: #4db6ac; --bg: #e0f2f1; --explain-bg: #fffde7; --explain-text: #f57f17; }
+        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #b2dfdb 0%, #e0f2f1 100%); margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; user-select: none; padding-bottom: 50px; }
+        
+        .falling-flowers { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .flower { position: absolute; top: -20px; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(105vh) rotate(720deg); } }
+        
+        .container { 
+            background: rgba(255,255,255,0.98); 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+            padding: 30px; 
+            max-width: 900px; 
+            width: 90%; 
+            margin-top: 30px; 
+            text-align: center; 
+            z-index: 1; 
+            border-top: 5px solid var(--primary); 
+            position: relative;
+            min-height: 300px;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        
+        .screen { width: 100%; }
+        .hidden { display: none !important; }
+
+        /* Câu hỏi */
+        .question-box { 
+            background: #fff; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 20px 0; 
+            font-size: 1.2rem; 
+            color: #263238; 
+            font-weight: 600; 
+            border: 1px solid #b0bec5; 
+            text-align: left;
+            line-height: 1.6;
+        }
+        
+        /* Bài đọc */
+        .reading-passage {
+            font-weight: normal;
+            font-size: 1rem;
+            background: #f1f8e9;
+            padding: 15px;
+            border-left: 4px solid var(--primary);
+            margin-bottom: 15px;
+            white-space: pre-wrap;
+            color: #33691e;
+        }
+
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media (max-width: 600px) { .options-grid { grid-template-columns: 1fr; } }
+        
+        .btn-option { 
+            background: white; 
+            border: 2px solid #cfd8dc; 
+            padding: 15px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-size: 1.05rem; 
+            transition: 0.2s; 
+            position: relative; 
+            min-height: 50px; 
+            width: 100%; 
+            text-align: left;
+            color: #455a64;
+        }
+        .btn-option:hover { background: #e0f2f1; transform: translateY(-2px); border-color: var(--primary); color: var(--primary); }
+        .btn-option.correct { background: #c8e6c9 !important; border-color: #4caf50 !important; color: #1b5e20; font-weight: bold; }
+        .btn-option.wrong { background: #ffcdd2 !important; border-color: #e53935 !important; color: #b71c1c; opacity: 0.7; }
+        
+        /* KHUNG GIẢI THÍCH & DỊCH */
+        .explanation-box { margin-top: 20px; padding: 15px; background-color: var(--explain-bg); color: #333; border-radius: 10px; border-left: 5px solid #fbc02d; text-align: left; font-size: 1rem; animation: fadeIn 0.5s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .explanation-title { font-weight: bold; color: #f57f17; text-decoration: underline; margin-bottom: 5px; display: block; }
+        .trans-text { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #ccc; color: #0277bd; font-style: italic; display: block;}
+
+        .btn-main { background: var(--primary); color: white; border: none; padding: 15px 40px; border-radius: 30px; font-size: 1.3rem; cursor: pointer; margin-top: 20px; box-shadow: 0 4px 10px rgba(0, 105, 92, 0.4); transition: transform 0.1s; font-weight: bold; text-transform: uppercase; }
+        .btn-main:active { transform: scale(0.95); }
+        .btn-next { background: #ffb300; color: #212121; display: none; margin: 20px auto 0; width: 100%; max-width: 300px; }
+        
+        .info-bar { display: flex; justify-content: space-between; font-weight: bold; color: var(--primary); margin-bottom: 15px; font-size: 1.1rem; border-bottom: 1px solid #b2dfdb; padding-bottom: 10px; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        #music-control { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; border-radius: 50%; background: white; border: 2px solid var(--primary); color: var(--primary); font-size: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 100; transition: all 0.3s; }
+        .music-playing { animation: spin 4s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="falling-flowers" id="flowers"></div>
+    
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" type="audio/mpeg">
+    </audio>
+    <div id="music-control" onclick="toggleMusic()">🎵</div>
+
+    <div class="container">
+        <div id="start-screen" class="screen">
+            <h1 style="color:var(--primary); font-size: 2rem; margin-bottom: 10px;">ENGLISH 8 GLOBAL SUCCESS</h1>
+            <h2 style="color: #004d40;">Unit 7 - Unit 8 - Unit 9</h2>
+            <div style="font-size: 4rem; margin: 20px;">🇻🇳 🇬🇧</div>
+            <p style="font-size: 1.1rem;">150 Câu hỏi - Có Dịch Tiếng Việt</p>
+            <button class="btn-main" onclick="startGame()">BẮT ĐẦU ▶</button>
+        </div>
+
+        <div id="game-ui" class="screen hidden">
+            <div class="info-bar">
+                <span id="score-display">Score: 0</span>
+                <span id="progress-display">Question: 1/150</span>
+            </div>
+            <div class="question-box" id="question-text">Loading...</div>
+            <div class="options-grid" id="options-container"></div>
+            
+            <div id="explanation-area" class="explanation-box hidden">
+                <span class="explanation-title">💡 Giải thích:</span>
+                <span id="explanation-text"></span>
+                <span id="trans-text" class="trans-text"></span>
+            </div>
+
+            <button id="btn-next" class="btn-main btn-next" onclick="nextQuestion()">➡ NEXT QUESTION</button>
+        </div>
+
+        <div id="end-screen" class="screen hidden">
+            <h1 style="color:var(--primary)">CONGRATULATIONS!</h1>
+            <div style="font-size: 4rem; margin: 20px;">🏆</div>
+            <h2 id="final-score" style="color: #2e7d32; font-size: 2rem;"></h2>
+            <p>Bạn đã hoàn thành bài ôn tập Unit 7-8-9!</p>
+            <button class="btn-main" onclick="location.reload()">LÀM LẠI 🔄</button>
+        </div>
+    </div>
+
+<script>
+    // ========================================================================
+    // DATA: 150 CÂU HỎI KÈM DỊCH NGHĨA (trans)
+    // ========================================================================
+    const rawQuestions = [
+        // --- UNIT 7: ENVIRONMENTAL PROTECTION ---
+        {
+            q: "Choose the word whose underlined part is pronounced differently: <br><u>h</u>onest, <u>h</u>onor, <u>h</u>our, <u>h</u>oney", 
+            a: ["honest", "honor", "hour", "honey"], 
+            correct: 3, 
+            explain: "'honey' phát âm là /h/ (có bật hơi). Các từ còn lại âm 'h' bị câm.",
+            trans: "Dịch: honest (thật thà), honor (danh dự), hour (giờ), honey (mật ong/người yêu)."
+        },
+        {
+            q: "Don't drink that water! It's ______.", 
+            a: ["contaminated", "pure", "safe", "fresh"], 
+            correct: 0, 
+            explain: "Cần tính từ mang nghĩa tiêu cực. Contaminated = ô nhiễm/độc hại.",
+            trans: "Dịch: Đừng uống nước đó! Nó bị ô nhiễm rồi."
+        },
+        {
+            q: "Factories ______ toxic waste into the river.", 
+            a: ["dump", "protect", "recycle", "save"], 
+            correct: 0, 
+            explain: "Dump waste = đổ chất thải bừa bãi.",
+            trans: "Dịch: Các nhà máy đổ chất thải độc hại xuống sông."
+        },
+        {
+            q: "We should avoid using ______ products like plastic bags.", 
+            a: ["single-use", "reusable", "sustainable", "long-term"], 
+            correct: 0, 
+            explain: "Single-use products = sản phẩm dùng một lần.",
+            trans: "Dịch: Chúng ta nên tránh sử dụng các sản phẩm dùng một lần như túi nilon."
+        },
+        {
+            q: "The ______ of the ozone layer is a serious problem.", 
+            a: ["depletion", "protection", "production", "solution"], 
+            correct: 0, 
+            explain: "Ozone depletion = sự suy giảm tầng ozone.",
+            trans: "Dịch: Sự suy giảm tầng ozone là một vấn đề nghiêm trọng."
+        },
+        // Grammar Unit 7
+        {
+            q: "I will call you ______ I arrive at the airport.", 
+            a: ["as soon as", "until", "while", "though"], 
+            correct: 0, 
+            explain: "As soon as = ngay khi (diễn tả hành động nối tiếp).",
+            trans: "Dịch: Tôi sẽ gọi cho bạn ngay khi tôi đến sân bay."
+        },
+        {
+            q: "______ I was walking to school, I saw a lot of rubbish.", 
+            a: ["While", "Before", "After", "Since"], 
+            correct: 0, 
+            explain: "While + Quá khứ tiếp diễn (hành động đang xảy ra).",
+            trans: "Dịch: Trong khi tôi đang đi bộ đến trường, tôi thấy rất nhiều rác."
+        },
+
+        // --- UNIT 8: SHOPPING ---
+        {
+            q: "I usually buy food at the ______ store because it is open 24/7.", 
+            a: ["convenience", "department", "specialty", "clothing"], 
+            correct: 0, 
+            explain: "Convenience store = cửa hàng tiện lợi (mở 24/7).",
+            trans: "Dịch: Tôi thường mua đồ ăn ở cửa hàng tiện lợi vì nó mở cửa 24/7."
+        },
+        {
+            q: "Can you ______ the price? It's too expensive.", 
+            a: ["bargain", "buy", "sell", "pay"], 
+            correct: 0, 
+            explain: "Bargain = mặc cả/trả giá.",
+            trans: "Dịch: Bạn có thể mặc cả giá không? Nó đắt quá."
+        },
+        {
+            q: "Look at the ______! It says $50.", 
+            a: ["price tag", "receipt", "bar code", "coupon"], 
+            correct: 0, 
+            explain: "Price tag = mác giá/thẻ giá.",
+            trans: "Dịch: Nhìn vào mác giá kìa! Nó ghi 50 đô la."
+        },
+        {
+            q: "I bought this shirt on ______; it was 50% off.", 
+            a: ["sale", "sell", "sold", "sales"], 
+            correct: 0, 
+            explain: "On sale = đang giảm giá.",
+            trans: "Dịch: Tôi mua chiếc áo này trong đợt giảm giá; nó được giảm 50%."
+        },
+        // Grammar Unit 8 (Schedule)
+        {
+            q: "The train ______ at 9:00 a.m. tomorrow.", 
+            a: ["leaves", "will leave", "leaving", "left"], 
+            correct: 0, 
+            explain: "Lịch trình tàu xe (Timetable) dùng Hiện tại đơn.",
+            trans: "Dịch: Chuyến tàu rời đi lúc 9 giờ sáng mai."
+        },
+        {
+            q: "Our semester ______ on September 5th.", 
+            a: ["starts", "will start", "is starting", "start"], 
+            correct: 0, 
+            explain: "Lịch học/Khai giảng -> Hiện tại đơn.",
+            trans: "Dịch: Học kỳ của chúng tôi bắt đầu vào ngày 5 tháng 9."
+        },
+        {
+            q: "I ______ go to the open-air market, maybe once a year.", 
+            a: ["rarely", "always", "usually", "often"], 
+            correct: 0, 
+            explain: "Once a year = hiếm khi (rarely).",
+            trans: "Dịch: Tôi hiếm khi đi chợ trời, có lẽ mỗi năm một lần."
+        },
+
+        // --- UNIT 9: NATURAL DISASTERS ---
+        {
+            q: "A sudden shaking of the earth's surface is called an ______.", 
+            a: ["earthquake", "eruption", "epidemic", "erosion"], 
+            correct: 0, 
+            explain: "Earthquake = động đất.",
+            trans: "Dịch: Sự rung chuyển đột ngột của bề mặt trái đất được gọi là động đất."
+        },
+        {
+            q: "The volcanic ______ caused heavy damage.", 
+            a: ["eruption", "explosion", "erosion", "election"], 
+            correct: 0, 
+            explain: "Volcanic eruption = sự phun trào núi lửa.",
+            trans: "Dịch: Vụ phun trào núi lửa đã gây ra thiệt hại nặng nề."
+        },
+        {
+            q: "Many houses were destroyed by the ______.", 
+            a: ["tornado", "sunshine", "breeze", "drizzle"], 
+            correct: 0, 
+            explain: "Tornado = lốc xoáy (các từ còn lại là thời tiết nhẹ).",
+            trans: "Dịch: Nhiều ngôi nhà bị phá hủy bởi lốc xoáy."
+        },
+        {
+            q: "The government provided ______ aid to the affected area.", 
+            a: ["emergency", "urgent", "hurry", "quick"], 
+            correct: 0, 
+            explain: "Emergency aid = viện trợ khẩn cấp.",
+            trans: "Dịch: Chính phủ đã cung cấp viện trợ khẩn cấp cho khu vực bị ảnh hưởng."
+        },
+        // Grammar Unit 9 (Past Continuous & Passive)
+        {
+            q: "I ______ TV at 8 p.m. yesterday.", 
+            a: ["was watching", "watched", "am watching", "have watched"], 
+            correct: 0, 
+            explain: "Thời điểm cụ thể trong quá khứ (8h tối qua) -> Quá khứ tiếp diễn.",
+            trans: "Dịch: Tôi đang xem TV lúc 8 giờ tối qua."
+        },
+        {
+            q: "While we ______ dinner, the lights went out.", 
+            a: ["were having", "had", "are having", "have"], 
+            correct: 0, 
+            explain: "While + QKTD (hành động dài), QKĐ (hành động ngắn xen vào).",
+            trans: "Dịch: Trong khi chúng tôi đang ăn tối, đèn vụt tắt."
+        },
+        {
+            q: "The house ______ by the storm last week.", 
+            a: ["was destroyed", "destroyed", "is destroyed", "has been destroyed"], 
+            correct: 0, 
+            explain: "Bị động quá khứ đơn: was/were + V3/ed.",
+            trans: "Dịch: Ngôi nhà đã bị phá hủy bởi cơn bão tuần trước."
+        },
+
+        // --- SENTENCE BUILDING ---
+        {
+            q: "Rearrange: protect / environment / We / should / the / .", 
+            a: ["We should protect the environment.", "We environment should protect the.", "Should we protect the environment.", "The environment should we protect."], 
+            correct: 0, 
+            explain: "S + should + V + O.",
+            trans: "Dịch: Chúng ta nên bảo vệ môi trường."
+        },
+        {
+            q: "Rearrange: opens / The / 8 a.m. / market / at / .", 
+            a: ["The market opens at 8 a.m.", "The market at 8 a.m. opens.", "At 8 a.m. the market opens.", "Opens the market at 8 a.m."], 
+            correct: 0, 
+            explain: "S + V + Time (Lịch trình).",
+            trans: "Dịch: Chợ mở cửa lúc 8 giờ sáng."
+        },
+
+        // --- READING COMPREHENSION (CLOZE TEXT) ---
+        {
+            q: "<div class='reading-passage'>Global warming is a serious problem. It causes the Earth's temperature to (1)______. This leads to the melting of polar (2)______ caps. As a result, sea levels are (3)______.<br></div>Choose the best word for (1):", 
+            a: ["rise", "fall", "drop", "stop"], 
+            correct: 0, 
+            explain: "Temperature rises = nhiệt độ tăng.",
+            trans: "Dịch bài đọc: Sự nóng lên toàn cầu là vấn đề nghiêm trọng. Nó làm nhiệt độ Trái Đất tăng lên. Điều này dẫn đến băng ở các cực tan chảy. Kết quả là mực nước biển đang dâng cao."
+        },
+        {
+            q: "<div class='reading-passage'>Global warming is a serious problem. It causes the Earth's temperature to (1)______. This leads to the melting of polar (2)______ caps. As a result, sea levels are (3)______.<br></div>Choose the best word for (2):", 
+            a: ["ice", "snow", "water", "land"], 
+            correct: 0, 
+            explain: "Polar ice caps = chỏm băng địa cực.",
+            trans: "Dịch bài đọc: (Xem câu trước)"
+        },
+
+        // --- COMMUNICATION ---
+        {
+            q: "Mark: 'What time does the bus leave?' <br>Jenny: '______'", 
+            a: ["It leaves at 10 o'clock.", "It is leaving now.", "It will leave soon.", "It left yesterday."], 
+            correct: 0, 
+            explain: "Câu hỏi về lịch trình (timetable) -> Trả lời dùng Hiện tại đơn.",
+            trans: "Dịch: Mark: 'Xe buýt rời đi lúc mấy giờ?' - Jenny: 'Nó rời đi lúc 10 giờ.'"
+        },
+        {
+            q: "A: 'The flood destroyed everything.' <br>B: '______'", 
+            a: ["That's terrible!", "That's great!", "You're welcome.", "Good idea."], 
+            correct: 0, 
+            explain: "Chia sẻ nỗi buồn/đồng cảm -> That's terrible!",
+            trans: "Dịch: A: 'Lũ lụt đã phá hủy mọi thứ.' - B: 'Thật khủng khiếp!'"
+        },
+
+        // --- ERROR IDENTIFICATION ---
+        {
+            q: "Find the mistake: <br><u>The</u> plane <u>land</u> at 10:30 <u>tomorrow</u> morning.", 
+            a: ["land", "The", "at", "tomorrow"], 
+            correct: 0, 
+            explain: "Sai 'land'. Chủ ngữ số ít 'The plane' + lịch trình -> lands.",
+            trans: "Dịch: Máy bay hạ cánh lúc 10:30 sáng mai."
+        },
+        {
+            q: "Find the mistake: <br>I <u>was</u> <u>walk</u> down the street <u>when</u> it <u>rained</u>.", 
+            a: ["walk", "was", "when", "rained"], 
+            correct: 0, 
+            explain: "Sai 'walk'. Phải là 'walking' (Quá khứ tiếp diễn: was walking).",
+            trans: "Dịch: Tôi đang đi bộ xuống phố thì trời mưa."
+        },
+
+        // --- CÁC CÂU HỎI MỞ RỘNG (VOCAB & GRAMMAR) ---
+        {q: "The synonym of 'rubbish' is ______.", a: ["garbage", "garden", "garage", "gold"], correct: 0, explain: "Rubbish = Garbage (Rác).", trans: "Dịch: Từ đồng nghĩa với 'rubbish' là 'garbage' (rác)."},
+        {q: "The antonym of 'safe' is ______.", a: ["dangerous", "careful", "secure", "clean"], correct: 0, explain: "Safe (an toàn) >< Dangerous (nguy hiểm).", trans: "Dịch: Từ trái nghĩa với 'safe' là 'dangerous' (nguy hiểm)."},
+        {q: "Thermal pollution means the change in water ______.", a: ["temperature", "color", "taste", "level"], correct: 0, explain: "Thermal = nhiệt -> Temperature.", trans: "Dịch: Ô nhiễm nhiệt có nghĩa là sự thay đổi nhiệt độ nước."},
+        {q: "A ______ occurs when there is no rain for a long time.", a: ["drought", "flood", "storm", "wind"], correct: 0, explain: "Drought = hạn hán.", trans: "Dịch: Hạn hán xảy ra khi không có mưa trong một thời gian dài."},
+        {q: "When a volcano erupts, it sends ______ into the sky.", a: ["ash", "water", "ice", "wood"], correct: 0, explain: "Ash = tro bụi.", trans: "Dịch: Khi núi lửa phun trào, nó bắn tro bụi lên bầu trời."},
+        {q: "Goods that are grown or made at home are ______.", a: ["home-grown", "homemade", "imported", "exported"], correct: 0, explain: "Home-grown/Home-made.", trans: "Dịch: Hàng hóa được trồng hoặc làm tại nhà gọi là 'home-grown' (cây trồng) hoặc 'homemade' (đồ làm)."},
+        {q: "An open-air market is usually ______.", a: ["outdoors", "indoors", "online", "virtual"], correct: 0, explain: "Open-air = ngoài trời.", trans: "Dịch: Chợ trời thường ở ngoài trời."},
+        {q: "He is a ______. He buys things.", a: ["customer", "seller", "owner", "guard"], correct: 0, explain: "Customer = khách hàng.", trans: "Dịch: Anh ấy là khách hàng. Anh ấy mua đồ."},
+        {q: "Before I go to bed, I always ______ the doors.", a: ["lock", "locking", "locked", "locks"], correct: 0, explain: "Hiện tại đơn chỉ thói quen.", trans: "Dịch: Trước khi đi ngủ, tôi luôn khóa cửa."},
+        {q: "While mom was cooking, dad ______ the paper.", a: ["was reading", "read", "is reading", "reads"], correct: 0, explain: "Hai hành động song song trong quá khứ -> QKTD.", trans: "Dịch: Trong khi mẹ đang nấu ăn, bố đang đọc báo."},
+        {q: "The building ______ in 1990.", a: ["was built", "built", "is built", "has been built"], correct: 0, explain: "In 1990 -> Bị động quá khứ đơn.", trans: "Dịch: Tòa nhà được xây dựng vào năm 1990."},
+        {q: "If we ______ water, we will save money.", a: ["save", "saved", "will save", "saving"], correct: 0, explain: "Câu điều kiện loại 1.", trans: "Dịch: Nếu chúng ta tiết kiệm nước, chúng ta sẽ tiết kiệm tiền."},
+        {q: "We should ______ public transport to reduce pollution.", a: ["use", "using", "used", "uses"], correct: 0, explain: "Should + V nguyên thể.", trans: "Dịch: Chúng ta nên sử dụng phương tiện công cộng để giảm ô nhiễm."},
+        {q: "Plastic bags take years to ______.", a: ["decompose", "appear", "make", "burn"], correct: 0, explain: "Decompose = phân hủy.", trans: "Dịch: Túi nilon mất nhiều năm để phân hủy."},
+        {q: "______ is the air, water, and land in or on which people, animals, and plants live.", a: ["Environment", "Planet", "Earth", "Space"], correct: 0, explain: "Định nghĩa môi trường.", trans: "Dịch: Môi trường là không khí, nước và đất nơi con người, động vật và thực vật sinh sống."},
+        {q: "A ______ is a strong wind that blows in a circle.", a: ["tornado", "rain", "snow", "fog"], correct: 0, explain: "Định nghĩa lốc xoáy.", trans: "Dịch: Lốc xoáy là cơn gió mạnh thổi theo vòng tròn."},
+        {q: "The shaking of the ground caused buildings to ______.", a: ["collapse", "stand", "build", "grow"], correct: 0, explain: "Collapse = sụp đổ.", trans: "Dịch: Sự rung chuyển của mặt đất khiến các tòa nhà sụp đổ."},
+        {q: "People had to ______ their homes due to the fire.", a: ["evacuate", "stay", "build", "clean"], correct: 0, explain: "Evacuate = sơ tán.", trans: "Dịch: Mọi người phải sơ tán khỏi nhà do hỏa hoạn."},
+        {q: "Put the rubbish in the ______.", a: ["dustbin", "floor", "river", "sky"], correct: 0, explain: "Dustbin = thùng rác.", trans: "Dịch: Hãy bỏ rác vào thùng rác."},
+        {q: "I have a ______ about this product. It's broken.", a: ["complaint", "compliment", "comment", "question"], correct: 0, explain: "Complaint = lời phàn nàn.", trans: "Dịch: Tôi có một lời phàn nàn về sản phẩm này. Nó bị hỏng."},
+        {q: "The shop assistant was very ______.", a: ["helpful", "help", "helpless", "helping"], correct: 0, explain: "Helpful = hay giúp đỡ/có ích.", trans: "Dịch: Nhân viên bán hàng rất nhiệt tình giúp đỡ."},
+        {q: "Is this item ______ stock?", a: ["in", "on", "at", "of"], correct: 0, explain: "In stock = còn hàng.", trans: "Dịch: Món hàng này còn trong kho không?"},
+        {q: "Sorry, we are ______ of stock.", a: ["out", "off", "in", "over"], correct: 0, explain: "Out of stock = hết hàng.", trans: "Dịch: Xin lỗi, chúng tôi đã hết hàng."},
+        {q: "Can I pay ______ cash?", a: ["in", "by", "on", "with"], correct: 0, explain: "In cash = bằng tiền mặt.", trans: "Dịch: Tôi có thể trả bằng tiền mặt không?"},
+        {q: "Can I pay ______ credit card?", a: ["by", "in", "on", "with"], correct: 0, explain: "By credit card = bằng thẻ.", trans: "Dịch: Tôi có thể trả bằng thẻ tín dụng không?"},
+        {q: "The concert ______ at 7 p.m.", a: ["starts", "starting", "start", "will start"], correct: 0, explain: "Lịch trình -> starts.", trans: "Dịch: Buổi hòa nhạc bắt đầu lúc 7 giờ tối."},
+        {q: "While I ______ for the bus, I met my teacher.", a: ["was waiting", "waited", "am waiting", "wait"], correct: 0, explain: "Was waiting (đang đợi thì gặp).", trans: "Dịch: Trong khi tôi đang đợi xe buýt, tôi gặp giáo viên của mình."},
+        {q: "The trees ______ down by the wind.", a: ["were blown", "blew", "was blown", "blowing"], correct: 0, explain: "Were blown (bị thổi bay).", trans: "Dịch: Những cái cây bị gió thổi bay."},
+        {q: "Look at those clouds! It ______ rain.", a: ["is going to", "will", "does", "is"], correct: 0, explain: "Dự đoán có căn cứ -> is going to.", trans: "Dịch: Nhìn đám mây kia kìa! Trời sắp mưa rồi."},
+        {q: "This is the ______ expensive dress in the shop.", a: ["most", "more", "much", "many"], correct: 0, explain: "So sánh nhất.", trans: "Dịch: Đây là chiếc váy đắt nhất trong cửa hàng."},
+        {q: "Recycling is good ______ the environment.", a: ["for", "to", "with", "at"], correct: 0, explain: "Good for = tốt cho.", trans: "Dịch: Tái chế thì tốt cho môi trường."},
+        {q: "We must prevent people ______ cutting down trees.", a: ["from", "of", "off", "to"], correct: 0, explain: "Prevent form = ngăn chặn khỏi.", trans: "Dịch: Chúng ta phải ngăn chặn mọi người chặt phá cây."},
+        {q: "The river smells ______.", a: ["terrible", "terribly", "badly", "well"], correct: 0, explain: "Smell + adj (động từ chỉ giác quan).", trans: "Dịch: Con sông có mùi rất kinh khủng."},
+        {q: "It's important ______ wildlife.", a: ["to protect", "protecting", "protect", "protected"], correct: 0, explain: "It's adj + to V.", trans: "Dịch: Việc bảo vệ động vật hoang dã là rất quan trọng."},
+        {q: "She is interested in ______ new clothes.", a: ["buying", "buy", "to buy", "bought"], correct: 0, explain: "Interested in + Ving.", trans: "Dịch: Cô ấy thích mua quần áo mới."},
+        {q: "My mother ______ me a new bike last week.", a: ["bought", "buys", "will buy", "buy"], correct: 0, explain: "Last week -> QKĐ.", trans: "Dịch: Mẹ tôi đã mua cho tôi một chiếc xe đạp mới vào tuần trước."},
+        {q: "We ______ to Da Nang three times.", a: ["have been", "were", "go", "went"], correct: 0, explain: "Three times -> HTHT.", trans: "Dịch: Chúng tôi đã đến Đà Nẵng ba lần."},
+        {q: "I used ______ to school by bus.", a: ["to go", "go", "going", "went"], correct: 0, explain: "Used to + V (thói quen quá khứ).", trans: "Dịch: Tôi đã từng đi học bằng xe buýt."},
+        {q: "Stop ______ noise! The baby is sleeping.", a: ["making", "to make", "make", "made"], correct: 0, explain: "Stop + Ving (dừng hẳn việc đang làm).", trans: "Dịch: Ngừng làm ồn đi! Em bé đang ngủ."},
+        {q: "Remember ______ the door.", a: ["to lock", "locking", "lock", "locked"], correct: 0, explain: "Remember to V (nhớ phải làm gì).", trans: "Dịch: Nhớ khóa cửa nhé."},
+        {q: "Try ______ this shirt on.", a: ["putting", "to put", "put", "puts"], correct: 0, explain: "Try + Ving (thử làm gì).", trans: "Dịch: Hãy thử mặc chiếc áo này xem."},
+        {q: "The water is too dirty ______ drink.", a: ["to", "for", "that", "so"], correct: 0, explain: "Too + adj + to V.", trans: "Dịch: Nước quá bẩn để uống."},
+        {q: "It was ______ a cold day that we stayed home.", a: ["such", "so", "very", "too"], correct: 0, explain: "Such a ... that.", trans: "Dịch: Đó là một ngày lạnh đến nỗi chúng tôi đã ở nhà."},
+        {q: "Which word has the sound /k/?", a: ["School", "Cheap", "Machine", "Chef"], correct: 0, explain: "School /k/. Cheap /tʃ/, Machine/Chef /ʃ/.", trans: "Dịch: Từ nào có âm /k/? -> School."},
+        {q: "The sign says 'No Littering'. It means you ______ put rubbish in the bin.", a: ["must", "can", "shouldn't", "may"], correct: 0, explain: "Must (phải).", trans: "Dịch: Biển báo ghi 'Cấm xả rác'. Có nghĩa là bạn phải bỏ rác vào thùng."},
+        {q: "You ______ run in the school hall.", a: ["mustn't", "don't have to", "should", "can"], correct: 0, explain: "Mustn't (cấm).", trans: "Dịch: Bạn không được chạy trong sảnh trường."}
+    ];
+
+    // SINH TỰ ĐỘNG CÁC CÂU CÒN LẠI CHO ĐỦ 150 (VẪN CÓ DỊCH)
+    const extraSubjects = ["My father", "The teacher", "John", "Sarah", "The doctor"];
+    const extraVerbs = [
+        {en: "arrives", vi: "đến"}, 
+        {en: "leaves", vi: "rời đi"}, 
+        {en: "opens", vi: "mở cửa"}, 
+        {en: "closes", vi: "đóng cửa"}, 
+        {en: "starts", vi: "bắt đầu"}, 
+        {en: "ends", vi: "kết thúc"}
+    ];
+    const extraTimes = ["at 6 p.m.", "tomorrow", "next week", "tonight"];
+
+    // 1. Schedule (Lịch trình)
+    for(let i=0; i<30; i++) {
+        let s = extraSubjects[i % extraSubjects.length];
+        let v = extraVerbs[i % extraVerbs.length];
+        let t = extraTimes[i % extraTimes.length];
+        rawQuestions.push({
+            q: `Grammar: ${s} ______ ${t}.`,
+            a: [v.en, `will ${v.en.replace('s','')}`, `is ${v.en.replace('s','ing')}`, `has ${v.en.replace('s','ed')}`],
+            correct: 0,
+            explain: `Lịch trình (Schedule) dùng thì Hiện tại đơn: ${v.en}.`,
+            trans: `Dịch: ${s} ${v.vi} ${t}. (Lịch trình)`
+        });
+    }
+
+    // 2. Passive Voice (Bị động)
+    const passiveSubj = ["The cake", "The letter", "The bridge", "The song", "The email"];
+    const passiveAct = [
+        {en: "eaten", vi: "ăn"}, 
+        {en: "written", vi: "viết"}, 
+        {en: "built", vi: "xây"}, 
+        {en: "sung", vi: "hát"}, 
+        {en: "sent", vi: "gửi"}
+    ];
+    
+    for(let i=0; i<30; i++) {
+        let s = passiveSubj[i % passiveSubj.length];
+        let v = passiveAct[i % passiveAct.length];
+        rawQuestions.push({
+            q: `Grammar: ${s} ______ by him yesterday.`,
+            a: [`was ${v.en}`, `is ${v.en}`, `were ${v.en}`, `has been ${v.en}`],
+            correct: 0,
+            explain: `Bị động quá khứ đơn (số ít): was ${v.en}.`,
+            trans: `Dịch: ${s} đã được ${v.vi} bởi anh ấy ngày hôm qua.`
+        });
+    }
+
+    // 3. Past Continuous (Tiếp diễn)
+    const pcSubj = ["I", "He", "She", "Tom", "My mom"];
+    const pcVerbs = [
+        {en: "reading", vi: "đọc"},
+        {en: "sleeping", vi: "ngủ"},
+        {en: "working", vi: "làm việc"},
+        {en: "cooking", vi: "nấu ăn"}
+    ];
+    const pcTimes = ["at 7 p.m yesterday", "at this time last night"];
+
+    for(let i=0; i<20; i++) {
+        let s = pcSubj[i % pcSubj.length];
+        let v = pcVerbs[i % pcVerbs.length];
+        let t = pcTimes[i % pcTimes.length];
+        rawQuestions.push({
+            q: `Grammar: ${s} ______ ${v.en} ${t}.`,
+            a: [`was`, `were`, `is`, `are`],
+            correct: 0,
+            explain: `Quá khứ tiếp diễn với chủ ngữ số ít '${s}' -> was.`,
+            trans: `Dịch: ${s} đang ${v.vi} ${t}.`
+        });
+    }
+
+    // ========================================================================
+    // LOGIC GAME
+    // ========================================================================
+    let questions = []; 
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let isPlaying = false;
+    const audio = document.getElementById('bg-music');
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function toggleMusic() {
+        if (audio.paused) {
+            audio.play().catch(e => alert("Chạm màn hình để bật nhạc!"));
+            document.getElementById('music-control').classList.add('music-playing');
+        } else {
+            audio.pause();
+            document.getElementById('music-control').classList.remove('music-playing');
+        }
+    }
+
+    function startGame() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('end-screen').classList.add('hidden');
+        document.getElementById('game-ui').classList.remove('hidden');
+
+        score = 0;
+        currentQuestionIndex = 0;
+        questions = shuffleArray([...rawQuestions]).slice(0, 150); 
+        
+        isPlaying = true;
+        updateScore();
+        showQuestion();
+
+        if(audio.paused) toggleMusic();
+    }
+
+    function showQuestion() {
+        if (currentQuestionIndex >= questions.length) {
+            endGame();
+            return;
+        }
+        
+        const qData = questions[currentQuestionIndex];
+        
+        document.getElementById('question-text').innerHTML = `[${currentQuestionIndex + 1}] ${qData.q}`;
+        document.getElementById('progress-display').innerText = `Question: ${currentQuestionIndex + 1}/${questions.length}`;
+        
+        document.getElementById('explanation-area').classList.add('hidden');
+        document.getElementById('btn-next').style.display = 'none';
+
+        const optionsDiv = document.getElementById('options-container');
+        optionsDiv.innerHTML = '';
+        let indices = [0, 1, 2, 3];
+        shuffleArray(indices);
+
+        indices.forEach(index => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-option';
+            btn.innerHTML = qData.a[index]; 
+            btn.onclick = () => checkAnswer(index, qData.correct, btn);
+            optionsDiv.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selectedIndex, correctIndex, btnElement) {
+        if (!isPlaying) return;
+        
+        const allBtns = document.querySelectorAll('.btn-option');
+        allBtns.forEach(b => b.disabled = true);
+
+        if (selectedIndex === correctIndex) {
+            btnElement.classList.add('correct');
+            score += 10;
+        } else {
+            btnElement.classList.add('wrong');
+            allBtns.forEach(b => {
+                if(b.innerHTML === questions[currentQuestionIndex].a[correctIndex]) {
+                    b.classList.add('correct');
+                }
+            });
+        }
+        updateScore();
+
+        // HIỆN GIẢI THÍCH & DỊCH
+        document.getElementById('explanation-text').innerText = questions[currentQuestionIndex].explain;
+        // Kiểm tra xem có phần dịch không, nếu có thì hiện
+        if(questions[currentQuestionIndex].trans) {
+            document.getElementById('trans-text').innerText = questions[currentQuestionIndex].trans;
+            document.getElementById('trans-text').style.display = 'block';
+        } else {
+            document.getElementById('trans-text').style.display = 'none';
+        }
+
+        document.getElementById('explanation-area').classList.remove('hidden');
+        document.getElementById('btn-next').style.display = 'block';
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        showQuestion();
+    }
+
+    function updateScore() {
+        document.getElementById('score-display').innerText = `Score: ${score}`;
+    }
+
+    function endGame() {
+        isPlaying = false;
+        document.getElementById('game-ui').classList.add('hidden');
+        document.getElementById('end-screen').classList.remove('hidden');
+        document.getElementById('final-score').innerText = `Total Score: ${score} / ${questions.length * 10}`;
+    }
+    
+    function createFlowers() {
+        const container = document.getElementById('flowers');
+        const symbols = ['🌸', '🍂', '❄️', '☀️', '🍀']; 
+        for(let i=0; i<25; i++) {
+            const el = document.createElement('div');
+            el.className = 'flower';
+            el.innerText = symbols[Math.floor(Math.random()*symbols.length)];
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            el.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            el.style.animationDelay = Math.random() * 5 + 's';
+            container.appendChild(el);
+        }
+    }
+    createFlowers();
+</script>
+</body>
+</html>
